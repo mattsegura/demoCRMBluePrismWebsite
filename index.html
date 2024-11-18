@@ -5,182 +5,298 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer CRM with Order Entry and HR Functions</title>
     <style>
+        :root {
+            --primary-color: #2962ff;
+            --secondary-color: #0039cb;
+            --success-color: #4caf50;
+            --background-color: #f5f7fa;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --border-radius: 8px;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f4f4f4;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
-        h1, h2 {
-            color: #333;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        .section {
-            background-color: #fff;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
             padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        h1, h2 {
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        .section {
+            background-color: var(--card-background);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+        }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
+
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-color);
         }
-        .form-group input, .form-group select {
+
+        .form-group input, 
+        .form-group select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(41, 98, 255, 0.1);
+        }
+
         .btn {
-            background-color: #007bff;
-            color: #fff;
-            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
             border: none;
-            border-radius: 5px;
+            border-radius: var(--border-radius);
             cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
         }
+
         .btn:hover {
-            background-color: #0056b3;
+            background-color: var(--secondary-color);
         }
+
         .confirmation {
             margin-top: 20px;
             padding: 15px;
-            background-color: #dff0d8;
-            color: #3c763d;
-            border-radius: 4px;
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            display: none;
         }
+
         .language-toggle {
-            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
         }
-        .language-toggle button {
-            margin-right: 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
+
+        .language-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            background-color: transparent;
+            color: var(--primary-color);
             cursor: pointer;
-            background-color: #007bff;
-            color: #fff;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-        .language-toggle button:hover {
-            background-color: #0056b3;
+
+        .language-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1 id="crmTitle">Customer CRM</h1>
+            <div class="language-toggle" id="languageToggleSection">
+                <button id="btnLanguageEnglish" class="language-btn active" onclick="toggleLanguage('en')">English</button>
+                <button id="btnLanguageSpanish" class="language-btn" onclick="toggleLanguage('es')">Español</button>
+            </div>
+        </div>
 
-    <h1 id="crmTitle">Customer CRM</h1>
+        <!-- Order Entry Section -->
+        <div class="section" id="orderEntrySection">
+            <h2 id="orderEntryTitle">Order Entry</h2>
+            <form id="orderEntryForm">
+                <div class="form-group">
+                    <label for="customerInput" id="customerLabel">Customer:</label>
+                    <input type="text" id="customerInput" name="customerInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="firstNameInput" id="firstNameLabel">First Name:</label>
+                    <input type="text" id="firstNameInput" name="firstNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastNameInput" id="lastNameLabel">Last Name:</label>
+                    <input type="text" id="lastNameInput" name="lastNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="productSelect" id="productLabel">Product:</label>
+                    <select id="productSelect" name="productSelect" required>
+                        <option value="Digital Worker">Digital Worker</option>
+                        <option value="Document Automation">Document Automation</option>
+                        <option value="Chorus BPM">Chorus BPM</option>
+                        <option value="Blue Prism Cloud">Blue Prism Cloud</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amountInput" id="amountLabel">Amount:</label>
+                    <input type="text" id="amountInput" name="amountInput" required>
+                </div>
+                <button type="button" id="submitOrderButton" name="submitOrderButton" class="btn" onclick="submitOrderEntry()">Submit</button>
+                <div id="orderEntryConfirmation" name="orderEntryConfirmation" class="confirmation"></div>
+            </form>
+        </div>
 
-    <!-- Language Toggle -->
-    <div class="language-toggle" id="languageToggleSection">
-        <button id="btnLanguageEnglish" name="languageButton" onclick="toggleLanguage('en')">English</button>
-        <button id="btnLanguageSpanish" name="languageButton" onclick="toggleLanguage('es')">Español</button>
-    </div>
-
-    <!-- Order Entry Section -->
-    <div class="section" id="orderEntrySection">
-        <h2 id="orderEntryTitle">Order Entry</h2>
-        <form id="orderEntryForm">
-            <div class="form-group">
-                <label for="customerInput" id="customerLabel">Customer:</label>
-                <input type="text" id="customerInput" name="customerInput" required>
-            </div>
-            <div class="form-group">
-                <label for="firstNameInput" id="firstNameLabel">First Name:</label>
-                <input type="text" id="firstNameInput" name="firstNameInput" required>
-            </div>
-            <div class="form-group">
-                <label for="lastNameInput" id="lastNameLabel">Last Name:</label>
-                <input type="text" id="lastNameInput" name="lastNameInput" required>
-            </div>
-            <div class="form-group">
-                <label for="productSelect" id="productLabel">Product:</label>
-                <select id="productSelect" name="productSelect" required>
-                    <option value="Digital Worker">Digital Worker</option>
-                    <option value="Document Automation">Document Automation</option>
-                    <option value="Chorus BPM">Chorus BPM</option>
-                    <option value="Blue Prism Cloud">Blue Prism Cloud</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="amountInput" id="amountLabel">Amount:</label>
-                <input type="text" id="amountInput" name="amountInput" required>
-            </div>
-            <button type="button" id="submitOrderButton" name="submitOrderButton" class="btn" onclick="submitOrderEntry()">Submit</button>
-            <div id="orderEntryConfirmation" name="orderEntryConfirmation" class="confirmation" style="display:none;"></div>
-        </form>
-    </div>
-
-    <!-- HR Section -->
-    <div class="section" id="hrSection">
-        <h2 id="hrTitle">HR Function</h2>
-        <form id="hrForm">
-            <div class="form-group">
-                <label for="hrNameInput" id="hrNameLabel">Employee Name:</label>
-                <input type="text" id="hrNameInput" name="hrNameInput" required>
-            </div>
-            <div class="form-group">
-                <label for="hrPositionInput" id="hrPositionLabel">Position:</label>
-                <input type="text" id="hrPositionInput" name="hrPositionInput" required>
-            </div>
-            <div class="form-group">
-                <label for="hrSalaryInput" id="hrSalaryLabel">Salary:</label>
-                <input type="number" id="hrSalaryInput" name="hrSalaryInput" required>
-            </div>
-            <button type="button" id="submitHRButton" name="submitHRButton" class="btn" onclick="submitHR()">Submit</button>
-            <div id="hrConfirmation" name="hrConfirmation" class="confirmation" style="display:none;"></div>
-        </form>
+        <!-- HR Section -->
+        <div class="section" id="hrSection">
+            <h2 id="hrTitle">HR Function</h2>
+            <form id="hrForm">
+                <div class="form-group">
+                    <label for="hrNameInput" id="hrNameLabel">Employee Name:</label>
+                    <input type="text" id="hrNameInput" name="hrNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="hrPositionInput" id="hrPositionLabel">Position:</label>
+                    <input type="text" id="hrPositionInput" name="hrPositionInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="hrSalaryInput" id="hrSalaryLabel">Salary:</label>
+                    <input type="number" id="hrSalaryInput" name="hrSalaryInput" required>
+                </div>
+                <button type="button" id="submitHRButton" name="submitHRButton" class="btn" onclick="submitHR()">Submit</button>
+                <div id="hrConfirmation" name="hrConfirmation" class="confirmation"></div>
+            </form>
+        </div>
     </div>
 
     <script>
+        const translations = {
+            en: {
+                crmTitle: 'Customer CRM',
+                orderEntryTitle: 'Order Entry',
+                customerLabel: 'Customer:',
+                firstNameLabel: 'First Name:',
+                lastNameLabel: 'Last Name:',
+                productLabel: 'Product:',
+                amountLabel: 'Amount:',
+                submitOrderButton: 'Submit',
+                hrTitle: 'HR Function',
+                hrNameLabel: 'Employee Name:',
+                hrPositionLabel: 'Position:',
+                hrSalaryLabel: 'Salary:',
+                submitHRButton: 'Submit',
+                orderConfirmation: 'Order submitted successfully! Confirmation Number: ',
+                hrConfirmation: 'HR data submitted successfully! Confirmation Number: '
+            },
+            es: {
+                crmTitle: 'CRM de Clientes',
+                orderEntryTitle: 'Entrada de Pedido',
+                customerLabel: 'Cliente:',
+                firstNameLabel: 'Nombre:',
+                lastNameLabel: 'Apellido:',
+                productLabel: 'Producto:',
+                amountLabel: 'Monto:',
+                submitOrderButton: 'Enviar',
+                hrTitle: 'Función de RRHH',
+                hrNameLabel: 'Nombre del Empleado:',
+                hrPositionLabel: 'Posición:',
+                hrSalaryLabel: 'Salario:',
+                submitHRButton: 'Enviar',
+                orderConfirmation: '¡Pedido enviado exitosamente! Número de confirmación: ',
+                hrConfirmation: '¡Datos de RRHH enviados exitosamente! Número de confirmación: '
+            }
+        };
+
         function generateConfirmationNumber() {
             return 'CONF-' + Math.floor(Math.random() * 1000000);
         }
 
         function submitOrderEntry() {
             const confirmationNumber = generateConfirmationNumber();
-            document.getElementById('orderEntryConfirmation').style.display = 'block';
-            document.getElementById('orderEntryConfirmation').innerText = 'Order submitted successfully! Confirmation Number: ' + confirmationNumber;
+            const confirmation = document.getElementById('orderEntryConfirmation');
+            confirmation.style.display = 'block';
+            const currentLang = document.documentElement.lang;
+            confirmation.innerText = translations[currentLang].orderConfirmation + confirmationNumber;
         }
 
         function submitHR() {
             const confirmationNumber = generateConfirmationNumber();
-            document.getElementById('hrConfirmation').style.display = 'block';
-            document.getElementById('hrConfirmation').innerText = 'HR data submitted successfully! Confirmation Number: ' + confirmationNumber;
+            const confirmation = document.getElementById('hrConfirmation');
+            confirmation.style.display = 'block';
+            const currentLang = document.documentElement.lang;
+            confirmation.innerText = translations[currentLang].hrConfirmation + confirmationNumber;
         }
 
         function toggleLanguage(language) {
-            if (language === 'en') {
-                document.getElementById('orderEntryTitle').innerText = 'Order Entry';
-                document.getElementById('customerLabel').innerText = 'Customer:';
-                document.getElementById('firstNameLabel').innerText = 'First Name:';
-                document.getElementById('lastNameLabel').innerText = 'Last Name:';
-                document.getElementById('productLabel').innerText = 'Product:';
-                document.getElementById('amountLabel').innerText = 'Amount:';
-                document.getElementById('submitOrderButton').innerText = 'Submit';
-                document.getElementById('hrTitle').innerText = 'HR Function';
-                document.getElementById('hrNameLabel').innerText = 'Employee Name:';
-                document.getElementById('hrPositionLabel').innerText = 'Position:';
-                document.getElementById('hrSalaryLabel').innerText = 'Salary:';
-                document.getElementById('submitHRButton').innerText = 'Submit';
-            } else if (language === 'es') {
-                document.getElementById('orderEntryTitle').innerText = 'Entrada de Pedido';
-                document.getElementById('customerLabel').innerText = 'Cliente:';
-                document.getElementById('firstNameLabel').innerText = 'Nombre:';
-                document.getElementById('lastNameLabel').innerText = 'Apellido:';
-                document.getElementById('productLabel').innerText = 'Producto:';
-                document.getElementById('amountLabel').innerText = 'Monto:';
-                document.getElementById('submitOrderButton').innerText = 'Enviar';
-                document.getElementById('hrTitle').innerText = 'Función de RRHH';
-                document.getElementById('hrNameLabel').innerText = 'Nombre del Empleado:';
-                document.getElementById('hrPositionLabel').innerText = 'Posición:';
-                document.getElementById('hrSalaryLabel').innerText = 'Salario:';
-                document.getElementById('submitHRButton').innerText = 'Enviar';
+            document.documentElement.lang = language;
+            
+            // Update button states
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`#btnLanguage${language === 'en' ? 'English' : 'Spanish'}`).classList.add('active');
+
+            // Update all translations
+            for (const [key, value] of Object.entries(translations[language])) {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (key.includes('Button')) {
+                        element.innerText = value;
+                    } else if (key.includes('Label')) {
+                        element.innerText = value;
+                    } else {
+                        element.innerText = value;
+                    }
+                }
             }
         }
     </script>
-
 </body>
 </html>
