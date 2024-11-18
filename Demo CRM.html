@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer CRM with Order Entry and HR Functions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .confirmation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border-radius: 4px;
+        }
+        .language-toggle {
+            margin-bottom: 20px;
+        }
+        .language-toggle button {
+            margin-right: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+        }
+        .language-toggle button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="crmTitle">Customer CRM</h1>
+
+    <!-- Language Toggle -->
+    <div class="language-toggle" id="languageToggleSection">
+        <button id="btnLanguageEnglish" name="languageButton" onclick="toggleLanguage('en')">English</button>
+        <button id="btnLanguageSpanish" name="languageButton" onclick="toggleLanguage('es')">Español</button>
+    </div>
+
+    <!-- Order Entry Section -->
+    <div class="section" id="orderEntrySection">
+        <h2 id="orderEntryTitle">Order Entry</h2>
+        <form id="orderEntryForm">
+            <div class="form-group">
+                <label for="customerInput" id="customerLabel">Customer:</label>
+                <input type="text" id="customerInput" name="customerInput" required>
+            </div>
+            <div class="form-group">
+                <label for="firstNameInput" id="firstNameLabel">First Name:</label>
+                <input type="text" id="firstNameInput" name="firstNameInput" required>
+            </div>
+            <div class="form-group">
+                <label for="lastNameInput" id="lastNameLabel">Last Name:</label>
+                <input type="text" id="lastNameInput" name="lastNameInput" required>
+            </div>
+            <div class="form-group">
+                <label for="productSelect" id="productLabel">Product:</label>
+                <select id="productSelect" name="productSelect" required>
+                    <option value="Digital Worker">Digital Worker</option>
+                    <option value="Document Automation">Document Automation</option>
+                    <option value="Chorus BPM">Chorus BPM</option>
+                    <option value="Blue Prism Cloud">Blue Prism Cloud</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="amountInput" id="amountLabel">Amount:</label>
+                <input type="text" id="amountInput" name="amountInput" required>
+            </div>
+            <button type="button" id="submitOrderButton" name="submitOrderButton" class="btn" onclick="submitOrderEntry()">Submit</button>
+            <div id="orderEntryConfirmation" name="orderEntryConfirmation" class="confirmation" style="display:none;"></div>
+        </form>
+    </div>
+
+    <!-- HR Section -->
+    <div class="section" id="hrSection">
+        <h2 id="hrTitle">HR Function</h2>
+        <form id="hrForm">
+            <div class="form-group">
+                <label for="hrNameInput" id="hrNameLabel">Employee Name:</label>
+                <input type="text" id="hrNameInput" name="hrNameInput" required>
+            </div>
+            <div class="form-group">
+                <label for="hrPositionInput" id="hrPositionLabel">Position:</label>
+                <input type="text" id="hrPositionInput" name="hrPositionInput" required>
+            </div>
+            <div class="form-group">
+                <label for="hrSalaryInput" id="hrSalaryLabel">Salary:</label>
+                <input type="number" id="hrSalaryInput" name="hrSalaryInput" required>
+            </div>
+            <button type="button" id="submitHRButton" name="submitHRButton" class="btn" onclick="submitHR()">Submit</button>
+            <div id="hrConfirmation" name="hrConfirmation" class="confirmation" style="display:none;"></div>
+        </form>
+    </div>
+
+    <script>
+        function generateConfirmationNumber() {
+            return 'CONF-' + Math.floor(Math.random() * 1000000);
+        }
+
+        function submitOrderEntry() {
+            const confirmationNumber = generateConfirmationNumber();
+            document.getElementById('orderEntryConfirmation').style.display = 'block';
+            document.getElementById('orderEntryConfirmation').innerText = 'Order submitted successfully! Confirmation Number: ' + confirmationNumber;
+        }
+
+        function submitHR() {
+            const confirmationNumber = generateConfirmationNumber();
+            document.getElementById('hrConfirmation').style.display = 'block';
+            document.getElementById('hrConfirmation').innerText = 'HR data submitted successfully! Confirmation Number: ' + confirmationNumber;
+        }
+
+        function toggleLanguage(language) {
+            if (language === 'en') {
+                document.getElementById('orderEntryTitle').innerText = 'Order Entry';
+                document.getElementById('customerLabel').innerText = 'Customer:';
+                document.getElementById('firstNameLabel').innerText = 'First Name:';
+                document.getElementById('lastNameLabel').innerText = 'Last Name:';
+                document.getElementById('productLabel').innerText = 'Product:';
+                document.getElementById('amountLabel').innerText = 'Amount:';
+                document.getElementById('submitOrderButton').innerText = 'Submit';
+                document.getElementById('hrTitle').innerText = 'HR Function';
+                document.getElementById('hrNameLabel').innerText = 'Employee Name:';
+                document.getElementById('hrPositionLabel').innerText = 'Position:';
+                document.getElementById('hrSalaryLabel').innerText = 'Salary:';
+                document.getElementById('submitHRButton').innerText = 'Submit';
+            } else if (language === 'es') {
+                document.getElementById('orderEntryTitle').innerText = 'Entrada de Pedido';
+                document.getElementById('customerLabel').innerText = 'Cliente:';
+                document.getElementById('firstNameLabel').innerText = 'Nombre:';
+                document.getElementById('lastNameLabel').innerText = 'Apellido:';
+                document.getElementById('productLabel').innerText = 'Producto:';
+                document.getElementById('amountLabel').innerText = 'Monto:';
+                document.getElementById('submitOrderButton').innerText = 'Enviar';
+                document.getElementById('hrTitle').innerText = 'Función de RRHH';
+                document.getElementById('hrNameLabel').innerText = 'Nombre del Empleado:';
+                document.getElementById('hrPositionLabel').innerText = 'Posición:';
+                document.getElementById('hrSalaryLabel').innerText = 'Salario:';
+                document.getElementById('submitHRButton').innerText = 'Enviar';
+            }
+        }
+    </script>
+
+</body>
+</html>
